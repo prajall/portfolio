@@ -8,10 +8,11 @@ const SectionWrapper = ({ children, className }) => {
         className,
         "h-[95vh] max-h-[870px] min-h-[750px] w-full px-4 md:px-8 lg:px-20",
       )}
-    >
+    > 
       {children}
     </section>
   );
 };
+// hello
 
 export default SectionWrapper;
