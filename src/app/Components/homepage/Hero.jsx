@@ -1,46 +1,36 @@
 "use client";
+import { variants } from "@/framer-motion-variants";
 import logo from "@/images/logo.png";
 import potrait from "@/images/potrait2.jpeg";
-import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Allura } from "next/font/google";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { CursorVariantContext } from "../../Contexts/CursorVariantContext";
 import SectionWrapper from "../SectionWrapper";
-import { variants } from "@/framer-motion-variants";
-import {
-  Allura,
-  Arizonia,
-  Calligraffitti,
-  Fondamento,
-  Great_Vibes,
-  Kristi,
-  Monsieur_La_Doulaise,
-  Niconne,
-  Nothing_You_Could_Do,
-  Qwitcher_Grypen,
-  Rock_Salt,
-} from "next/font/google";
-import { cn } from "@/lib/utils";
 
 const bigFont = Allura({ subsets: ["latin"], weight: "400" });
 
 function Hero() {
   const { setCursorVariant } = useContext(CursorVariantContext);
-  const spanVariants = {
-    initial: { opacity: 0, x: -10 }, // Initial state of the span (hidden and slightly left)
-    hover: { opacity: 1, x: 0, transition: { duration: 0.3 } }, // Animate to visible and aligned with "Hire me"
-  };
 
-  const entrance1 = {
-    animate: { opacity: 1, y: 0 },
-  };
+  const parallaxTarget = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: parallaxTarget,
+    offset: ["end end", "end start"],
+  });
+
+  const smParallax = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const mdParallax = useTransform(scrollYProgress, [0, 1], [0, -75]);
+  const lgParallax = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
   return (
-    <div>
+    <div ref={parallaxTarget}>
       <nav className="flex w-full items-center justify-between py-7">
-        <Image src={logo} alt="Logo" width={44} height={44} />
+        <img src={logo} alt="Logo" width={44} height={44} />
         <div className="flex gap-8 text-lg md:gap-12 md:text-xl lg:gap-16">
           <p>About</p>
           <p>Projects</p>
@@ -53,16 +43,20 @@ function Hero() {
           <div className="hidden flex-1 flex-col lg:flex lg:items-end lg:px-6 lg:text-left">
             <div className="lg:text-left">
               <motion.p
+                style={{ y: lgParallax }}
+                className="mb-4 text-xl font-semibold"
+                variants={variants.heroOther}
+              >
+                Hey👋 Welcome to my portfolio.
+              </motion.p>
+              <br />
+              <motion.p
                 variants={variants.heroOther}
                 initial="initial"
                 animate="animate"
                 className="mb-3 text-justify text-lg"
+                style={{ y: mdParallax }}
               >
-                <span className="mb-4 text-xl font-semibold">
-                  Hey👋 Welcome to my portfolio.
-                </span>
-                <br />
-                <br />
                 I'm a creative Full Stack Developer specialized in creating
                 dynamic web applications. I help you to bring your innovative
                 ideas to life. Lets work together.
@@ -75,7 +69,7 @@ function Hero() {
               >
                 <motion.button
                   className="group flex w-44 cursor-none items-center justify-center gap-1 rounded-full border border-black bg-white px-6 py-2"
-                  style={{ boxShadow: "5px 5px 0px 0px black" }}
+                  style={{ boxShadow: "5px 5px 0px 0px black", y: smParallax }}
                   whileHover={{
                     boxShadow: "6px 7px 2px 0px black",
                     scale: 1.001,
@@ -93,7 +87,7 @@ function Hero() {
                 </motion.button>
                 <motion.button
                   className="group flex w-44 cursor-none items-center justify-center gap-1 rounded-full border border-black bg-white px-6 py-2"
-                  style={{ boxShadow: "5px 5px 0px 0px black" }}
+                  style={{ boxShadow: "5px 5px 0px 0px black", y: smParallax }}
                   whileHover={{
                     boxShadow: "6px 7px 2px 0px black",
                     scale: 1.001,
@@ -121,18 +115,20 @@ function Hero() {
             className="relative mt-8 flex min-w-fit flex-1 justify-center pb-10 pr-10 xl:mt-10"
           >
             <motion.div className="relative">
-              <img
+              <motion.img
                 src={potrait.src}
                 alt="Portrait"
-                className="relative z-10 h-[320px] w-[220px] object-cover md:h-[420px] md:w-[280px]"
+                className="relative z-10 h-[320px] w-[220px] object-cover shadow-md drop-shadow-md md:h-[420px] md:w-[280px]"
                 width={280}
                 height={420}
+                style={{ y: lgParallax }}
               />
               <motion.div
                 variants={variants.heroImageShadow}
                 initial="initial"
                 animate="animate"
                 className="absolute left-7 top-7 z-0 h-[320px] w-[220px] border-2 border-black md:h-[420px] md:w-[280px]"
+                style={{ y: smParallax }}
               />
             </motion.div>
           </motion.div>
@@ -145,19 +141,28 @@ function Hero() {
             className="mt-8 hidden flex-1 text-center lg:mt-0 lg:block lg:px-6 lg:text-left"
           >
             <ul className="space-y-4 text-lg">
-              <li className="flex items-center justify-center space-x-2 lg:justify-start">
+              <motion.li
+                style={{ y: lgParallax }}
+                className="flex items-center justify-center space-x-2 lg:justify-start"
+              >
                 <FaInstagram size={20} />
                 <a href="#" className="text-gray-800">
                   Instagram
                 </a>
-              </li>
-              <motion.li className="flex items-center justify-center space-x-2 lg:justify-start">
+              </motion.li>
+              <motion.li
+                style={{ y: mdParallax }}
+                className="flex items-center justify-center space-x-2 lg:justify-start"
+              >
                 <FaLinkedin size={20} />
                 <a href="#" className="text-gray-800">
                   LinkedIn
                 </a>
               </motion.li>
-              <motion.li className="flex items-center justify-center space-x-2 lg:justify-start">
+              <motion.li
+                style={{ y: smParallax }}
+                className="flex items-center justify-center space-x-2 lg:justify-start"
+              >
                 <FaGithub size={20} />
                 <a href="#" className="text-gray-800">
                   Github
@@ -177,13 +182,14 @@ function Hero() {
                 bigFont.className + "",
                 "mx-auto mb-0 w-fit font-light leading-none text-black",
               )}
-              style={{ fontSize: "clamp(2rem, 12vw, 12rem)" }}
+              style={{ fontSize: "clamp(2rem, 12vw, 12rem)", y: lgParallax }}
               onMouseEnter={() => setCursorVariant("text")}
               onMouseLeave={() => setCursorVariant("default")}
             >
               Prajal Maharjan
             </motion.h1>
             <motion.div
+              style={{ y: mdParallax }}
               variants={variants.underText}
               initial="initial"
               animate="animate"

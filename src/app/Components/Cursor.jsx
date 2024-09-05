@@ -15,6 +15,8 @@ const Cursor = () => {
     default: {
       width: 13,
       height: 13,
+      // mixBlendMode: "difference",
+      // backgroundColor: "#fdfdfd",
     },
     text: {
       width: 170,
@@ -25,7 +27,7 @@ const Cursor = () => {
     link: {
       width: 150,
       height: 150,
-      backgroundColor: "#fdfdfd",
+      backgroundColor: "#1d1d1de7",
     },
     hire: {
       width: 70,
@@ -90,11 +92,11 @@ const Cursor = () => {
       }}
       transition={{ duration: 0.3 }}
     >
-      {cursorVariant === "default" && <></>}
       {cursorVariant === "link" && (
         <motion.p
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
+          className="mx-auto my-auto text-white"
         >
           <ArrowUpRight size={35} />
         </motion.p>

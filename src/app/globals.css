@@ -101,3 +101,25 @@
   background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, 1) 60%, transparent 100%);
   pointer-events: none;
 }
+
+/* Lenis Scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
